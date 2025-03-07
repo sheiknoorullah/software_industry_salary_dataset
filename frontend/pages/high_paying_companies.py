@@ -6,7 +6,6 @@ def main():
     companies = fetch_data("high-paying-companies")
     if companies:
         st.table(companies)
-        print((companies))
 
 if __name__ == "__main__":
     main()
