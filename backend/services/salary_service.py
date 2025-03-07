@@ -52,3 +52,22 @@ def get_salary_trends_by_location():
     location_salaries.columns = ["Location", "Average Salary"]
 
     return location_salaries.to_dict(orient='records')
+
+
+def get_salary_by_company_rating():
+    """
+    Retrieves the average salary for each company rating.
+    """
+    df = load_dataframe()
+
+    if df is None:
+        return {}
+
+    salary_by_rating = (
+        df.groupby("Rating")["Salary"]
+        .mean()
+        .reset_index()
+    )
+    salary_by_rating.columns = ["Company Rating", "Average Salary"]
+
+    return salary_by_rating.to_dict(orient='records')

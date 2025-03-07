@@ -38,3 +38,15 @@ async def salary_trends_by_location():
         return trends
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/salary-by-company-rating")
+async def salary_by_company_rating():
+    """
+    Endpoint to get the average salary for each company rating.
+    """
+    try:
+        results = get_salary_by_company_rating()
+        return results
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
