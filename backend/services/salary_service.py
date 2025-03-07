@@ -112,3 +112,19 @@ def get_employment_status_and_salary():
         "Employment Status", "Average Salary"]
 
     return salary_by_employment_status.to_dict(orient='records')
+
+
+def get_salary_report_frequency():
+    """
+    Retrieves the most frequently reported salary values.
+    """
+    df = load_dataframe()
+
+    if df is None:
+        return {}
+
+    # Calculate the frequency of each salary value
+    salary_frequency = df["Salary"].value_counts().reset_index()
+    salary_frequency.columns = ["Salary", "Frequency"]
+
+    return salary_frequency.to_dict(orient='records')

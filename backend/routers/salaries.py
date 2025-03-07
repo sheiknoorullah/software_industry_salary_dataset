@@ -74,3 +74,15 @@ async def employment_status_and_salary():
         return relationship
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/salary-report-frequency")
+async def salary_report_frequency():
+    """
+    Endpoint to get the most frequently reported salary values.
+    """
+    try:
+        frequency = get_salary_report_frequency()
+        return frequency
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
