@@ -36,3 +36,19 @@ def get_most_common_job_titles(limit: int = 10):
     job_title_counts.columns = ["Job Title", "Count"]
 
     return job_title_counts.to_dict(orient='records')
+
+
+def get_salary_trends_by_location():
+    """
+    Retrieves salary trends by location.
+    """
+    df = load_dataframe()
+
+    if df is None:
+        return {}
+
+    # Calculate the average salary for each location
+    location_salaries = df.groupby('Location')['Salary'].mean().reset_index()
+    location_salaries.columns = ["Location", "Average Salary"]
+
+    return location_salaries.to_dict(orient='records')

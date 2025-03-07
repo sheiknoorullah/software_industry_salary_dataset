@@ -26,3 +26,15 @@ async def common_job_titles(limit: int = Query(10, description="limit the number
         return job_titles
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/salary-trends-by-location")
+async def salary_trends_by_location():
+    """
+    Endpoint to get salary trends by location.
+    """
+    try:
+        trends = get_salary_trends_by_location()
+        return trends
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
