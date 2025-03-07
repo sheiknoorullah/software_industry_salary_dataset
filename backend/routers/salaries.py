@@ -62,3 +62,15 @@ async def salary_distribution_by_job_title():
         return distribution
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/employment-status-and-salary")
+async def employment_status_and_salary():
+    """
+    Endpoint to get the relationship between employment status and salary.
+    """
+    try:
+        relationship = get_employment_status_and_salary()
+        return relationship
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

@@ -91,3 +91,24 @@ def get_salary_distribution_by_job_title():
     salary_by_job_title.columns = ["Job Title", "Average Salary"]
 
     return salary_by_job_title.to_dict(orient='records')
+
+
+def get_employment_status_and_salary():
+    """
+    Retrieves the relationship between employment status and salary.
+    """
+    df = load_dataframe()
+
+    if df is None:
+        return {}
+
+    # Calculate the average salary for each employment status
+    salary_by_employment_status = (
+        df.groupby("Employment Status")["Salary"]
+        .mean()
+        .reset_index()
+    )
+    salary_by_employment_status.columns = [
+        "Employment Status", "Average Salary"]
+
+    return salary_by_employment_status.to_dict(orient='records')
