@@ -53,12 +53,12 @@ async def salary_by_company_rating():
 
 
 @router.get("/salary-distribution-by-job-title")
-async def salary_distribution_by_job_title():
+async def salary_distribution_by_job_title(limit: int = Query(10, description="limit the number of results")):
     """
     Endpoint to get the salary distribution by job title.
     """
     try:
-        distribution = get_salary_distribution_by_job_title()
+        distribution = get_salary_distribution_by_job_title(limit)
         return distribution
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

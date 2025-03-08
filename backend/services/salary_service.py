@@ -73,7 +73,7 @@ def get_salary_by_company_rating():
     return salary_by_rating.to_dict(orient='records')
 
 
-def get_salary_distribution_by_job_title():
+def get_salary_distribution_by_job_title(limit: int = 10):
     """
     Retrieves the salary distribution by job title.
     """
@@ -85,7 +85,7 @@ def get_salary_distribution_by_job_title():
     # Calculate the average salary for each job title
     salary_by_job_title = (
         df.groupby("Job Title")["Salary"]
-        .mean()
+        .mean().sort_values(ascending=False).head(limit)
         .reset_index()
     )
     salary_by_job_title.columns = ["Job Title", "Average Salary"]
