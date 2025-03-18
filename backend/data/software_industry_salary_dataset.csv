@@ -4959,8 +4959,8 @@ Rating,Company Name,Job Title,Salary,Salaries Reported,Location,Employment Statu
 4.0,Aptus Data Labs,Database Administrator Lead,2300000,1,Bangalore,Full Time,Database
 4.0,Yahoo,Senior MySQL Database Administrator,1500000,1,Bangalore,Full Time,Database
 3.4,CENTURYLINK,Database Administrator Consultant,1000000,1,Bangalore,Full Time,Database
-4.1,IBM,"""ORACLE DBA""",168000,1,Bangalore,Full Time,Database
-3.8,Capgemini,"""ORACLE DBA""",400000,1,Bangalore,Full Time,Database
+4.1,IBM,"ORACLE DBA",168000,1,Bangalore,Full Time,Database
+3.8,Capgemini,"ORACLE DBA",400000,1,Bangalore,Full Time,Database
 3.7,Microland,Sr. Database Administrator,600000,1,Bangalore,Full Time,Database
 3.9,Alcon,Clinical Database Programmer,2400000,1,Bangalore,Full Time,Database
 4.1,MoEngage,MongoDB Database Administrator,700000,1,Bangalore,Full Time,Database

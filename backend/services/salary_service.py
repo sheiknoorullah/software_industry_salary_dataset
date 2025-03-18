@@ -192,19 +192,15 @@ def prepare_data_for_prediction():
     X_train_processed = preprocessor.fit_transform(X_train)
     X_test_processed = preprocessor.transform(X_test)
 
-    # Salary Categories for Logistic Regression:
-    # use y_train instead of y
-    salary_bins = pd.qcut(y_train, q=3, labels=['low', 'medium', 'high'])
-    y_categorical = salary_bins
 
-    return X_train_processed, X_test_processed, y_train, y_test, y_categorical, preprocessor
+    return X_train_processed, X_test_processed, y_train, y_test, preprocessor
 
 
 def train_and_evaluate_models():
     """
     Trains Linear Regression and Logistic Regression models and evaluates their performance.
     """
-    X_train, X_test, y_train, y_test, y_categorical, preprocessor = prepare_data_for_prediction()
+    X_train, X_test, y_train, y_test, preprocessor = prepare_data_for_prediction()
 
     if X_train is None:
         return None
@@ -213,39 +209,19 @@ def train_and_evaluate_models():
     linear_model = LinearRegression()
     linear_model.fit(X_train, y_train)
     y_pred_linear = linear_model.predict(X_test)
-    # print(accuracy_score(y_test, y_pred_linear))
+ 
     rmse_linear = np.sqrt(mean_squared_error(y_test, y_pred_linear))
     r2_linear = r2_score(y_test, y_pred_linear)
     print("--- Linear Regression ---")
     print(f"RMSE: {rmse_linear}")
     print(f"R-squared: {r2_linear}")
 
-    # --- Logistic Regression ---
-    logistic_model = LogisticRegression(max_iter=1000)
-    logistic_model.fit(X_train, y_categorical)
-    y_pred_logistic = logistic_model.predict(X_test)
-
-    # Create salary categories for the test set
-    y_test_categorical = pd.qcut(y_test, q=3, labels=['low', 'medium', 'high'])
-
-    accuracy_logistic = accuracy_score(y_test_categorical, y_pred_logistic)
-    precision_logistic = precision_score(
-        y_test_categorical, y_pred_logistic, average='weighted')
-    recall_logistic = recall_score(
-        y_test_categorical, y_pred_logistic, average='weighted')
-    f1_logistic = f1_score(
-        y_test_categorical, y_pred_logistic, average='weighted')
-    print("--- Logistic Regression ---")
-    print(f"Accuracy: {accuracy_logistic}")
-    print(f"Precision: {precision_logistic}")
-    print(f"Recall: {recall_logistic}")
-    print(f"F1-score: {f1_logistic}")
-
+    
     # Save the models and preprocessor
     models = {
         'linear_model': linear_model,
-        'logistic_model': logistic_model
     }
+
     with open('salary_prediction_models.pkl', 'wb') as file:
         pickle.dump(models, file)
     with open('salary_prediction_preprocessor.pkl', 'wb') as file:
@@ -266,19 +242,6 @@ def get_predict_salary_linear(input_data, preprocessor, linear_model):
         print(e)
         raise Exception(str(e))
 
-
-def get_predict_salary_logistic(input_data, preprocessor, logistic_model):
-    """Predicts salary category using Logistic Regression."""
-    try:
-        input_df = pd.DataFrame([input_data])
-        
-        processed_input = preprocessor.transform(input_df)
-        # print(input_df)
-        prediction = logistic_model.predict(processed_input)[0]
-        return {"predicted_category": prediction}
-    except Exception as e:
-        raise Exception(str(e))
-    
 
 if __name__ == "__main__":
     train_and_evaluate_models()
