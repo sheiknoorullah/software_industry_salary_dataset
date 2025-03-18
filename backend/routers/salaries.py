@@ -1,5 +1,7 @@
 from fastapi import APIRouter, HTTPException, Query
 from services.salary_service import *
+from pydantic import BaseModel
+import pickle
 
 router = APIRouter()
 
@@ -84,5 +86,45 @@ async def salary_report_frequency():
     try:
         frequency = get_salary_report_frequency()
         return frequency
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+try:
+    with open('services/salary_prediction_models.pkl', 'rb') as file:
+        models = pickle.load(file)
+    with open('services/salary_prediction_preprocessor.pkl', 'rb') as file:
+        preprocessor = pickle.load(file)
+    linear_model = models['linear_model']
+    logistic_model = models['logistic_model']
+except FileNotFoundError:
+    raise Exception("Model files not found. Please train the models first.")
+
+
+class PredictionInput(BaseModel):
+    Rating: float
+    Job_Title: str
+    Location: str
+    Employment_Status: str
+
+
+@router.post("/predict_salary_linear")
+async def predict_salary_linear(input_data: PredictionInput):
+    """Predicts salary using Linear Regression."""
+    try:
+        result = get_predict_salary_linear(
+            input_data.dict(), preprocessor, linear_model)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/predict_salary_logistic")
+async def predict_salary_logistic(input_data: PredictionInput):
+    """Predicts salary category using Logistic Regression."""
+    try:
+        result = get_predict_salary_logistic(
+            input_data.dict(), preprocessor, logistic_model)
+        return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
