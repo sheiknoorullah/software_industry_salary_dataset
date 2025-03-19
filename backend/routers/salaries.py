@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Query
+from models.salary_model import PredictionInput
 from services.salary_service import *
-from pydantic import BaseModel
 import pickle
 
 router = APIRouter()
@@ -98,13 +98,6 @@ try:
     linear_model = models['linear_model']
 except FileNotFoundError:
     raise Exception("Model files not found. Please train the models first.")
-
-
-class PredictionInput(BaseModel):
-    Rating: float
-    Job_Title: str
-    Location: str
-    Employment_Status: str
 
 
 @router.post("/predict_salary_linear")
